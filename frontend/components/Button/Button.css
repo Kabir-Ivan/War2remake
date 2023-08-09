@@ -1,0 +1,19 @@
+.warbutton {
+    background-image: url("./../../../img/Wooden_texture.png");
+    background-size: 100% 100%;
+    border: 2px solid #400101;
+    width: 100%;
+    font-size: 24px;
+    color: #ffffff;
+    box-shadow: 0 2px #300101;
+    padding: 8px 8px;
+    font-family: 'War';
+}
+.warbutton:hover {
+    opacity: 0.9;
+}
+.warbutton:active {
+    background-color: #3e8e41;
+    box-shadow: 0 -2px #300101;
+    transform: translateY(4px);
+  }

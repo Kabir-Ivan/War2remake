@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tile creator</title>
+<style>
+.page {
+  text-align: center;
+}
+
+.rect {
+	margin:auto;
+	height: 500px;
+	width: 500px;
+	border: 5px solid #4fa;
+}
+.row {
+	height: calc(100%/3);
+	width: 100%;
+}
+.cell {
+	float:left; 
+	display:inline;
+	width: calc(100%/3);
+	height: 100%;
+	border-radius: 1;
+	border-color: #4f0;
+	border-width: 1px;
+}
+.tp {
+	float:left; 
+	display:inline;
+	width: 100%;
+	height: 100%;
+	padding: 12px 20px;
+	margin: auto;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	text-align: center;
+	font-size: 5vh;
+}
+.coord {
+	display:inline;
+	width: 6%;
+	height: 10%;
+	padding: 12px 20px;
+	margin: 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	text-align: center;
+	font-size: 3vh;
+}
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  color: #4CAF50;
+}
+.nxt {
+	display:inline;
+}
+
+/* CSS */
+.button {
+  appearance: none;
+  background-color: #2ea44f;
+  border: 1px solid rgba(27, 31, 35, .15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline;
+  font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 6px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.button:focus:not(:focus-visible):not(.focus-visible) {
+  box-shadow: none;
+  outline: none;
+}
+
+.button:hover {
+  background-color: #2c974b;
+}
+
+.button:focus {
+  box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
+  outline: none;
+}
+
+.button:disabled {
+  background-color: #94d3a2;
+  border-color: rgba(27, 31, 35, .1);
+  color: rgba(255, 255, 255, .8);
+  cursor: default;
+}
+
+.button:active {
+  background-color: #298e46;
+  box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+}
+
+
+
+
+
+.new {
+  padding: 50px;
+}
+
+.form-group {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.form-group input {
+  padding: 0;
+  height: initial;
+  width: initial;
+  margin-bottom: 0;
+  display: none;
+  cursor: pointer;
+}
+
+.form-group label {
+  position: relative;
+  cursor: pointer;
+}
+
+.form-group label:before {
+  content:'';
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #0079bf;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.form-group input:checked + label:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 2px;
+  left: 9px;
+  width: 6px;
+  height: 14px;
+  border: solid #0079bf;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+</style>
+</head>
+<body>
+
+<div class = "page">
+	<h1>Warcraft tile creator</h1>
+	<div style = "padding: 20px 20px">
+		<h1 class = "nxt">X</h1><input type = "text" class = "coord" value = "1" id = "x">
+		<h1 class = "nxt">Y</h1><input type = "text" class = "coord" value = "1" id = "y">
+		<h1 class = "nxt">Type</h1><input type = "text" class = "coord" value = "G" id = "tp">
+	</div>
+	<div class = "rect">
+		<div class = "row">
+			<div class = "cell">
+				<input type = "text" class = "tp" id = "1">
+			</div>
+			<div class = "cell">
+				<input type = "text" class = "tp" id = "2">
+			</div>
+			<div class = "cell">
+				<input type = "text" class = "tp" id = "3">
+			</div>
+		</div>
+		<div class = "row">
+			<div class = "cell">
+				<input type = "text" class = "tp" id = "4">
+			</div>
+			<div class = "cell">
+				<canvas style="width:100%;height:100%" id = "canvas"></canvas>
+				<!--<input type = "text" class = "tp">-->
+			</div>
+			<div class = "cell">
+				<input type = "text" class = "tp" id = "5">
+			</div>
+		</div>
+		<div class = "row">
+			<div class = "cell">
+				<input type = "text" class = "tp" id = "6">
+			</div>
+			<div class = "cell">
+				<input type = "text" class = "tp" id = "7">
+			</div>
+			<div class = "cell">
+				<input type = "text" class = "tp" id = "8">
+			</div>
+		</div>	
+	</div>
+	<div class="form-group" style = "padding: 20px">
+      <input type="checkbox" id="sv" checked>
+      <label for="sv">Load data</label>
+    </div>
+	<div style = "padding: 20px">
+		<button class = "button" id = "prev" onclick = "set(-1)">Previous</button>
+		<button class = "button" id = "sv" onclick = "save()">Save</button>
+		<button class = "button" id = "nxt" onclick = "set(1)">Next</button>
+	</div>
+	<div style = "padding: 20px">
+		<button class = "button" id = "downld" onclick = "download()">Download</button>
+	</div>
+</div>
+
+<script>
+function set(n) {
+	var x = Number(document.getElementById("x").value);
+	var y = Number(document.getElementById("y").value);
+	n += x + y * 19;
+	n = Math.max(n, 0);
+	x = n % 19;
+	y = Math.floor(n / 19);
+	document.getElementById("x").value = x;
+	document.getElementById("y").value = y;
+}
+
+function draw() {
+	const ctx = document.getElementById("canvas").getContext("2d");
+	var canvas = document.getElementById("canvas");
+	const img = new Image();
+	const NA = new Image();
+	var x = Number(document.getElementById("x").value);
+	var y = Number(document.getElementById("y").value);
+	img.onload = () => {
+		ctx.drawImage( NA, 0, 0, 128, 128, 0, 0, canvas.width, canvas.height);
+		ctx.drawImage( img, x * 33, y * 33, 32, 32, 0, 0, canvas.width, canvas.height);
+	};
+	NA.src = "img/NA.png";
+	img.src = "img/Summer Tiles.png";
+}
+
+function save() {
+	/*
+	HW#, OW# - Human and Orc walls
+	G - Grass
+	F - Forest
+	M - Mud
+	S - Stone
+	W - Water
+	C - Everything compatible
+	*/
+	var x = Number(document.getElementById("x").value);
+	var y = Number(document.getElementById("y").value);
+	var data = localStorage.tiles;
+	if(!data) {
+		jsonData = {};
+	}
+	else {
+		var jsonData = JSON.parse(data);
+	}
+    compatibility = {
+		'HW1': ['HW1', 'HW2', 'HW3'], 
+		'HW2': ['HW1', 'HW2', 'HW3'], 
+		'HW3': ['HW1', 'HW2', 'HW3'], 
+		'G': ['G', 'F', 'HW1', 'HW2', 'HW3', 'OW1', 'OW2', 'OW3'], 
+		'F': ['F'], 
+		'DF': [],
+		'DS': [],
+		'M': ['S', 'M', 'G'], 
+		'S': ['S']
+	};
+	
+    incompatibility = {
+	    'HW1': ['OW3', 'M', 'OW2', 'G', 'W', 'F', 'OW1', 'S'],
+		'HW2': ['OW3', 'M', 'OW2', 'G', 'W', 'F', 'OW1', 'S'],
+		'HW3': ['OW3', 'M', 'OW2', 'G', 'W', 'F', 'OW1', 'S'], 
+		'G': ['M', 'W', 'S'],
+		'DF': [],
+		'DS': [],
+		'F': ['OW3', 'M', 'OW2', 'HW2', 'G', 'W', 'HW1', 'HW3', 'OW1', 'S'], 
+		'M': ['OW3', 'OW2', 'HW2', 'F', 'HW1', 'HW3', 'OW1', 'W'],
+		'S': ['OW3', 'M', 'OW2', 'HW2', 'G', 'W', 'F', 'HW1', 'HW3', 'OW1']
+	};
+	var everything = ['HW3', 'OW3', 'M', 'G', 'OW1', 'OW2', 'S', 'HW1', 'HW2', 'W', 'F', 'DF', 'DS'];
+	var type = document.getElementById("tp").value;
+	let neighbors = [];
+	
+	for(var i = 1; i < 9; i++) {
+		let neighbor = document.getElementById(i).value;
+		/*if(neighbor == "C" && compatibility[type]) {
+			neighbors.push(compatibility[type]);
+		}
+		else if(neighbor == "!" && incompatibility[type]) {
+			neighbors.push(incompatibility[type]);
+		}
+		else if(neighbor == "*"){
+			neighbors.push(everything);
+		}
+		else if(neighbor == "="){
+			neighbors.push([type]);
+		}
+		else {
+			neighbors.push([neighbor]);
+		}*/
+		neighbors.push(neighbor);
+	}
+	jsonData[x + " " + y] = [type, neighbors];
+	localStorage.tiles = JSON.stringify(jsonData);
+	alert("Saved successfully!");
+	set(+1);
+}
+
+function load() {
+	var loadChecked = document.getElementById("sv").checked;
+	var x = Number(document.getElementById("x").value);
+	var y = Number(document.getElementById("y").value);
+	if(loadChecked) {
+		var data = localStorage.tiles;
+		if(!data) {
+			jsonData = {};
+		}
+		else {
+			var jsonData = JSON.parse(data);
+		}
+		if(jsonData[x + " " + y]) {
+			for(var i = 1; i < 9; i++) {
+				document.getElementById(i).value = jsonData[x + " " + y][1][i - 1];
+			}
+		}
+	}
+}
+function download() {
+	var data = localStorage.tiles;
+	if(!data) {
+		jsonData = {};
+	}
+	else {
+		var jsonData = JSON.parse(data);
+	}
+	console.log(JSON.stringify(jsonData, null, 1));
+	downloadObjectAsJson(jsonData, "tiles");
+}
+function downloadObjectAsJson(exportObj, exportName){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+var intervalId = window.setInterval(function(){
+  draw()
+}, 500);
+var intervalId = window.setInterval(function(){
+  load()
+}, 500);
+/*const ctx = document.getElementById("canvas").getContext("2d");
+const img = new Image();
+img.onload = () => {
+	ctx.drawImage(img, x * 33, y * 33, 10, 10, 10, 10, canvas.width, canvas.height);
+}
+img.scr = "./img/Summer Tiles.png";*/
+</script>
+
+</body>
+</html>

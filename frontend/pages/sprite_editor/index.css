@@ -1,0 +1,59 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-image: url("./../../../img/Stone_texture.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    font-family: 'War';
+    font-size: 24px;
+}
+
+canvas {
+    width: 60%;
+    height: 28vh;
+    border: 2px solid #600101;
+    display: block;
+}
+
+.row {
+    margin: 4px 4px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-wrap {
+    display: inline;
+    white-space: nowrap;
+    margin: 2px;
+}
+
+.button-wrap {
+    width: 10vw;
+    margin: auto;
+}
+/* .feature-wrap * {
+    display: inline;
+} */
+
+.container {
+    background-image: url("./../../../img/Paper.png");
+    background-size: 100% 100%;
+    display: flex;
+    width: 90vw;
+    height: 95vh;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.usable-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction:column;
+    width: 70%;
+}

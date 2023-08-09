@@ -1,0 +1,46 @@
+.war-select-box {
+    position: relative;
+    display: inline-flex;
+    box-sizing: border-box;
+  }
+  
+.war-select-box select {
+    background-image: url("./../../../img/Wooden_texture.png");
+    background-color: #500101;
+    color: white;
+    padding: 8px;
+    width: 250px;
+    border: none;
+    font-size: 24px;
+    font-family: 'War';
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    border: 2px solid #400101;
+    -webkit-appearance: button;
+    appearance: none;
+    outline: none;
+    
+  }
+  
+  .war-select-box::after {
+    content: "∇";
+    font-family: 'War';
+    position: relative;
+    top: 0;
+    right: 35px;
+    width: 20%;
+    height: 100%;
+    text-align: center;
+    font-size: 24px;
+    line-height: 45px;
+    color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    display: inline-block;
+  }
+  
+  .war-select-box:hover::after {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .war-select-box select option {
+    padding: 30px;
+  }

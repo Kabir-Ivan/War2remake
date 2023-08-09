@@ -1,0 +1,21 @@
+.warinput {
+    background-image: url("./../../../img/Wooden_texture.png");
+    background-size: 100% 100%;
+    border: 2px solid #400101;
+    font-size: 24px;
+    color: #ffffff;
+    padding: 8px 8px;
+    font-family: 'War';
+}
+.i-sz-xs {
+    width: 3vw;
+}
+.i-sz-s {
+    width: 6vw;
+}
+.i-sz-m {
+    width: 10vw;
+}
+.i-sz-l {
+    width: 20vw;
+}
