@@ -11,10 +11,12 @@ export default class App extends React.Component {
     this.props = props;
     this.state = {
       lastUpdate: Date.now(),
+      crosshair: new Sprite("./img/crosshair.png", [0, 0], [16, 16], 0, [0], "vertical", false, 0, "no", 1),
       filenames: [],
       json: null,
       sprite: null,
       savedData: {
+        name: "",
         url: "",
         pos: "",
         size: "",
@@ -56,6 +58,7 @@ export default class App extends React.Component {
 
   parseJson = () => {
     let data = JSON.stringify({
+      "name": this.getElementValue("name"),
       "url": "img/" + this.getElementValue("url"),
       "pos": this.getElementValue("pos").split(" ").map((val) => { return Number(val) }),
       "size": this.getElementValue("size").split(" ").map((val) => { return Number(val) }),
@@ -73,11 +76,47 @@ export default class App extends React.Component {
       sprite: SpriteFromJSON(data)
     });
     console.log(this.state);
+    return data;
 
+  }
+
+  save = () => {
+    const url = '/api/add_animation';
+
+    const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: this.parseJson()
+    };
+
+    fetch(url, options)
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);
+    })
+    .catch(error => {
+      alert('Error:', error);
+    });
+
+  }
+
+  shift = () => {
+    let pos = this.getElementValue("pos").split(" ").map((val) => { return Number(val) });
+    let size = this.getElementValue("size").split(" ").map((val) => { return Number(val) });
+    if (this.getElementValue("dir") == "vertical") {
+      pos[0] += size[0];
+    }
+    else {
+      pos[1] += size[1];
+    }
+    this.state.savedData.pos = pos.join(" ");
   }
 
   quickSave = () => {
     let data = JSON.stringify({
+      "name": this.getElementValue("name"),
       "url": this.getElementValue("url"),
       "pos": this.getElementValue("pos"),
       "size": this.getElementValue("size"),
@@ -98,12 +137,6 @@ export default class App extends React.Component {
       return;
     }
     let data = JSON.parse(localStorage.getItem("spriteData"));
-    // console.log(data);
-    // Object.keys(data).forEach((key) => {
-    //   this.setIdVal(key, data[key]);
-    // });
-    // document.getElementById("url").value = data.url;
-    // document.getElementById("once").checked = Boolean(data.once);
     this.setState({
       savedData: data
     })
@@ -120,14 +153,16 @@ export default class App extends React.Component {
     if (this.state.sprite) {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      console.log([canvas.width / 2, canvas.height / 2]);
       this.state.sprite.render(ctx, 1, [-canvas.width / 2, -canvas.height / 2]);
       this.state.sprite.update(dt);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      this.state.crosshair.render(ctx, 1, [-canvas.width / 2, -canvas.height / 2]);
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.beginPath();
       ctx.lineWidth = "1";
       ctx.strokeStyle = "#400101";
-      ctx.rect((canvas.width - this.state.sprite.size[0]) / 2 - 0.5, (canvas.height - this.state.sprite.size[1]) / 2 - 0.5, this.state.sprite.size[0] + 1, this.state.sprite.size[1] + 1);
+      ctx.rect((canvas.width - this.state.sprite.size[0] * this.state.sprite.spriteScale) / 2 - 0.5, (canvas.height - this.state.sprite.size[1] * this.state.sprite.spriteScale) / 2 - 0.5,
+               this.state.sprite.size[0] * this.state.sprite.spriteScale + 1, this.state.sprite.size[1] * this.state.sprite.spriteScale + 1);
       ctx.stroke();
     }
 
@@ -224,6 +259,10 @@ export default class App extends React.Component {
                 Shift:
                 <Input id="shift" s="xs" value={this.state.savedData.shift} onChange={this.handleInputChange}/>
               </div>
+              <div className="feature-wrap">
+                Name:
+                <Input id="name" s="l" value={this.state.savedData.name} onChange={this.handleInputChange}/>
+              </div>
             </div>
 
             <div className="row">
@@ -231,10 +270,13 @@ export default class App extends React.Component {
                 <Button onClick={this.parseJson}>Run</Button>
               </div>
               <div className="button-wrap">
+                <Button onClick={this.shift}>Shift by size</Button>
+              </div>
+              <div className="button-wrap">
                 <Button onClick={this.quickSave}>Quick Save</Button>
               </div>
               <div className="button-wrap">
-                <Button>Save</Button>
+                <Button onClick={this.save}>Save</Button>
               </div>
             </div>
 

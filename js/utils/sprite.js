@@ -11,7 +11,7 @@ class Sprite {
       this.degrees = degrees;
       this.flip = flip;
       this.endTime = Date.now() + this.frames.length / this.speed;
-      this.scale = scale;
+      this.spriteScale = scale;
       this.shift = shift;
     }
   
@@ -56,8 +56,8 @@ class Sprite {
       // Calculate the new destination coordinates and dimensions
       const dWidth = flipX ? -this.size[0] : this.size[0];
       const dHeight = flipY ? -this.size[1] : this.size[1];
-      const ndx = flipX ? this.size[0] / 2 + cameraPos[0] / scale : -this.size[0] / 2 - cameraPos[0] / scale;
-      const ndy = flipY ? this.size[1] / 2 + cameraPos[1] / scale : -this.size[1] / 2 - cameraPos[1] / scale;
+      const ndx = flipX ? this.size[0] / 2 + cameraPos[0] / scale / this.spriteScale: -this.size[0] / 2 - cameraPos[0] / scale / this.spriteScale;
+      const ndy = flipY ? this.size[1] / 2 + cameraPos[1] / scale / this.spriteScale : -this.size[1] / 2 - cameraPos[1] / scale / this.spriteScale;
   
       // Draw the image
       const resources = require('./resources').resources;
@@ -67,10 +67,10 @@ class Sprite {
         y,
         this.size[0],
         this.size[1],
-        ndx * scale,
-        ndy * scale,
-        dWidth * this.scale,
-        dHeight * this.scale
+        ndx * scale * this.spriteScale,
+        ndy * scale * this.spriteScale,
+        dWidth * this.scale * this.spriteScale,
+        dHeight * this.scale * this.spriteScale
       );
       ctx.restore();
       ctx.translate(x + this.size[0] / 2, y + this.size[1] / 2);

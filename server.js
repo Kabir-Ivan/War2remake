@@ -60,7 +60,7 @@ app.get('/api/get_img_names', (req, res) => {
 });
 
 app.post('/api/add_animation', function (req, res) {
-    const Folder = './db/animations';
+    const Folder = './sprites/animations';
     const fs = require('fs');
   
     if (!fs.existsSync(Folder)) {
@@ -68,7 +68,7 @@ app.post('/api/add_animation', function (req, res) {
         fs.mkdirSync(Folder, { recursive: true });
       } catch (error) {
         console.error('Error creating directory:', error);
-        return res.status(500).json({ error: 'Error creating directory.' });
+        return res.status(500).json({ message: 'Error creating directory.' });
       }
     }
   
@@ -78,18 +78,22 @@ app.post('/api/add_animation', function (req, res) {
     });
   
     let data = req.body;
-    if (data.name.includes(".") || data.name.includes("/")) {
-      return res.status(400).json({ error: 'Bad request.' });
+    console.log(data);
+    if (!data.name) {
+      return res.status(400).json({ message: 'Something went wrong.' });
     }
-    if (names.includes(data.name)) {
-      return res.status(400).json({ error: 'Name is already in use.' });
+    if (data.name.includes(".") || data.name.includes("/")) {
+      return res.status(400).json({ message: 'Bad request.' });
+    }
+    if (names.includes(data.name + ".json")) {
+      return res.status(400).json({ message: 'Name is already in use.' });
     }
     const filePath = `${Folder}/${data.name}.json`;
   
     fs.writeFile(filePath, JSON.stringify(data), (error) => {
       if (error) {
         console.error('Error saving file:', error);
-        return res.status(500).json({ error: 'Error saving file.' });
+        return res.status(500).json({ message: 'Error saving file.' });
       } else {
         console.log('File saved successfully.');
         return res.status(200).json({ message: 'File saved successfully.' });
