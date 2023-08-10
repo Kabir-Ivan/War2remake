@@ -73,6 +73,8 @@ canvas.height = window.innerHeight * 0.9;
 document.body.appendChild(canvas);
 const renderLoop = () => {
     requestAnimationFrame(renderLoop);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     mp.render(ctx);
     if(lastActionType == 0 && mouseDownCount) {
         ctx.setTransform(1, 0, 0, 1, 0, 0);

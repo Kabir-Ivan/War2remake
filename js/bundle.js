@@ -675,6 +675,8 @@ canvas.height = window.innerHeight * 0.9;
 document.body.appendChild(canvas);
 const renderLoop = () => {
     requestAnimationFrame(renderLoop);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     mp.render(ctx);
     if(lastActionType == 0 && mouseDownCount) {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -790,7 +792,7 @@ module.exports = {
 }
 },{}],8:[function(require,module,exports){
 class Sprite {
-    constructor(url, pos, size, speed, frames, dir = 'horizontal', once = false, degrees = 0, flip = 'no', scale = 1) {
+    constructor(url, pos, size, speed, frames, dir = 'horizontal', once = false, degrees = 0, flip = 'no', scale = 1, shift = [0, 0]) {
       this.pos = pos;
       this.size = size;
       this.speed = typeof speed === 'number' ? speed : 0;
@@ -803,10 +805,11 @@ class Sprite {
       this.flip = flip;
       this.endTime = Date.now() + this.frames.length / this.speed;
       this.scale = scale;
+      this.shift = shift;
     }
   
     update(dt) {
-      this._index += this.speed * dt;
+      this._index += this.speed * dt / 1000;
     }
   
     render(ctx, scale = 1, cameraPos = [0, 0]) {
@@ -828,9 +831,9 @@ class Sprite {
       let y = this.pos[1];
   
       if (this.dir == 'vertical') {
-        y += frame * this.size[1];
+        y += frame * this.size[1] - frame * this.shift[1];
       } else {
-        x += frame * this.size[0];
+        x += frame * this.size[0] - frame * this.shift[0];
       }
       let flipX = this.flip == 'vertical';
       let flipY = this.flip == 'horizontal';
@@ -873,7 +876,7 @@ class Sprite {
   
 function SpriteFromJSON(json) {
   data = JSON.parse(json);
-  return new Sprite(data.url, data.pos, data.size, data.speed, data.frames, data.dir, data.once, data.degrees, data.flip, data.scale);
+  return new Sprite(data.url, data.pos, data.size, data.speed, data.frames, data.dir, data.once, data.degrees, data.flip, data.scale, data.shift);
 }
 
 module.exports = {

@@ -3,13 +3,14 @@ import Button from "../../components/Button/Button";
 import Select from "../../components/Select/Select";
 import Checkbox from "../../components/Checkbox/Checkbox";
 import Input from "../../components/Input/Input";
-import { SpriteFromJSON } from "../../../js/utils/sprite";
+import sprite, { SpriteFromJSON } from "../../../js/utils/sprite";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
     this.state = {
+      lastUpdate: Date.now(),
       filenames: [],
       json: null,
       sprite: null,
@@ -110,14 +111,26 @@ export default class App extends React.Component {
   }
 
   renderSprite = () => {
+    let dt = Date.now() - this.state.lastUpdate;
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
+    this.setState({
+      lastUpdate: Date.now()
+    });
     if (this.state.sprite) {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       console.log([canvas.width / 2, canvas.height / 2]);
       this.state.sprite.render(ctx, 1, [-canvas.width / 2, -canvas.height / 2]);
+      this.state.sprite.update(dt);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.beginPath();
+      ctx.lineWidth = "1";
+      ctx.strokeStyle = "#400101";
+      ctx.rect((canvas.width - this.state.sprite.size[0]) / 2 - 0.5, (canvas.height - this.state.sprite.size[1]) / 2 - 0.5, this.state.sprite.size[0] + 1, this.state.sprite.size[1] + 1);
+      ctx.stroke();
     }
+
   }
 
   handleInputChange = event => {

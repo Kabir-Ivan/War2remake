@@ -16,7 +16,7 @@ class Sprite {
     }
   
     update(dt) {
-      this._index += this.speed * dt;
+      this._index += this.speed * dt / 1000;
     }
   
     render(ctx, scale = 1, cameraPos = [0, 0]) {
